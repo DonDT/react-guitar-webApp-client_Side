@@ -1,7 +1,7 @@
 import React from "react";
 import { IoIosCall } from "react-icons/io";
 import { FaEdge } from "react-icons/fa";
-import { FiClock } from "react-icons/fi";
+//import { FiClock } from "react-icons/fi";
 import { MdAccountBalance, MdAlarm } from "react-icons/md";
 
 const Footer = () => {
@@ -11,7 +11,7 @@ const Footer = () => {
         <div className="logo">Waves</div>
         <div className="wrapper">
           <div className="left">
-            <h2>contact Information</h2>
+            <h2>Contact Information</h2>
             <div className="business_nfo">
               <div className="tag">
                 <MdAccountBalance className="icon" />
@@ -45,9 +45,9 @@ const Footer = () => {
           </div>
 
           <div className="right">
-            <h2>Be the first to know</h2>
+            <h2>Be the first to know.</h2>
             <div>
-              get all the infomation on events, sales and offers. You can't miss
+              Get all the infomation on events, sales and offers. You can't miss
               out on.
             </div>
           </div>
