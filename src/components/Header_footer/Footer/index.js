@@ -1,7 +1,6 @@
 import React from "react";
 import { IoIosCall } from "react-icons/io";
 import { FaEdge } from "react-icons/fa";
-//import { FiClock } from "react-icons/fi";
 import { MdAccountBalance, MdAlarm } from "react-icons/md";
 
 const Footer = () => {
