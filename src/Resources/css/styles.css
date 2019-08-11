@@ -48,12 +48,12 @@ a {
 }
 
 .load_more_container span {
+  display: table;
   cursor: pointer;
   background: #2196f3;
   color: #ffffff;
   font-size: 27px;
   padding: 10px 60px;
-  display: table;
   margin: 0 auto;
 }
 
