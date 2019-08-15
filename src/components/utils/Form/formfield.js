@@ -55,13 +55,14 @@ const FormField = ({ formdata, change, id, element }) => {
             {formdata.showlabel ? (
               <div className="label_inputs">{formdata.config.label}</div>
             ) : null}
-            <select>
+            <select
               value={formdata.value}
               onBlur={event => change({ event, id, blur: true })}
-              onChange = {event => change({ event, id })}
+              onChange={event => change({ event, id })}
+            >
               <option value=""> Select one</option>
               {formdata.config.options.map(item => (
-                <option key={item.key} value={item.value}>
+                <option key={item.key} value={item.key}>
                   {item.value}
                 </option>
               ))}

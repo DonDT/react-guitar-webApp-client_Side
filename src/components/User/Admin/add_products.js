@@ -4,10 +4,18 @@ import FormField from "../../utils/Form/formfield";
 import {
   update,
   generateData,
-  isFormValid
+  isFormValid,
+  populateOptionFields,
+  resetFields
 } from "../../utils/Form/formActions";
 import { connect } from "react-redux";
-import { getBrands, getWoods } from "../../../actions/products_actions";
+import FileUpload from "../../utils/Form/fileUpload";
+import {
+  getBrands,
+  getWoods,
+  addProduct,
+  clearProduct
+} from "../../../actions/products_actions";
 
 class AddProducts extends Component {
   state = {
@@ -21,7 +29,7 @@ class AddProducts extends Component {
           label: "Product name",
           name: "name_input",
           type: "text",
-          placeholder: "Enter your name"
+          placeholder: "Enter product name"
         },
         validation: {
           required: true
@@ -138,7 +146,7 @@ class AddProducts extends Component {
           options: [
             { key: 20, value: 20 },
             { key: 21, value: 21 },
-            { key: 20, value: 22 },
+            { key: 22, value: 22 },
             { key: 24, value: 24 }
           ]
         },
@@ -157,7 +165,7 @@ class AddProducts extends Component {
           label: "Publish",
           placeholder: "publish_input",
           options: [
-            { key: true, value: "Publish" },
+            { key: true, value: "Public" },
             { key: false, value: "Hidden" }
           ]
         },
@@ -168,8 +176,106 @@ class AddProducts extends Component {
         touched: false,
         validationMessage: "",
         showlabel: true
+      },
+      images: {
+        value: [],
+        validation: {
+          required: false
+        },
+        valid: true,
+        touched: false,
+        validationMessage: "",
+        showlabl: false
       }
     }
+  };
+
+  updateFields = newFormData => {
+    this.setState({
+      formdata: newFormData
+    });
+  };
+
+  updateForm = element => {
+    const newFormdata = update(element, this.state.formdata, "products");
+    this.setState({
+      formError: false,
+      formdata: newFormdata
+    });
+  };
+
+  resetFieldHandler = () => {
+    const newFormData = resetFields(this.state.formdata, "products");
+    this.setState({
+      formdata: newFormData,
+      formSuccess: true
+    });
+
+    setTimeout(() => {
+      this.setState(
+        {
+          formSuccess: false
+        },
+        () => {
+          this.props.dispatch(clearProduct());
+        }
+      );
+    }, 3000);
+  };
+
+  submitForm = event => {
+    event.preventDefault();
+    let dataToSubmit = generateData(this.state.formdata, "products");
+    let formIsValid = isFormValid(this.state.formdata, "products");
+
+    if (formIsValid) {
+      this.props.dispatch(addProduct(dataToSubmit)).then(() => {
+        console.log("Hi");
+        if (this.props.products.addProduct.success) {
+          console.log("Hi-2");
+          this.resetFieldHandler();
+        } else {
+          this.setState({ formError: true });
+        }
+      });
+    } else {
+      this.setState({
+        formError: true
+      });
+    }
+  };
+
+  componentDidMount() {
+    const formdata = this.state.formdata;
+
+    this.props.dispatch(getBrands()).then(response => {
+      const newFormData = populateOptionFields(
+        formdata,
+        this.props.products.brands,
+        "brand"
+      );
+      this.updateFields(newFormData);
+    });
+
+    this.props.dispatch(getWoods()).then(response => {
+      const newFormData = populateOptionFields(
+        formdata,
+        this.props.products.woods,
+        "wood"
+      );
+      this.updateFields(newFormData);
+    });
+  }
+  imagesHandler = images => {
+    const newFormData = {
+      ...this.state.formdata
+    };
+    newFormData["images"].value = images;
+    newFormData["images"].valid = true;
+
+    this.setState({
+      formdata: newFormData
+    });
   };
 
   render() {
@@ -178,6 +284,11 @@ class AddProducts extends Component {
         <div>
           <h1>Add Product</h1>
           <form onSubmit={event => this.submitForm(event)}>
+            <FileUpload
+              imagesHandler={images => this.imagesHandler(images)}
+              reset={this.state.formSuccess}
+            />
+
             <FormField
               id={"name"}
               formdata={this.state.formdata.name}
