@@ -9,6 +9,7 @@ import Auth from "./hoc/auth";
 import Shop from "./components/shop";
 import AddProduct from "./components/User/Admin/add_products";
 import ManageCategories from "./components/User/Admin/manage_categories";
+import AddFile from "./components/User/Admin/add_file";
 
 const Routes = () => {
   return (
@@ -29,6 +30,7 @@ const Routes = () => {
           exact
           component={Auth(ManageCategories, true)}
         />
+        <Route path="/admin/add_file" exact component={Auth(AddFile, true)} />
         <Route path="/register" exact component={Auth(Register, false)} />
         <Route path="/register_login" component={Auth(RegisterLogin, false)} />
         <Route path="/shop" exact component={Auth(Shop, null)} />

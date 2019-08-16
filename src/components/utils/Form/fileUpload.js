@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, createRef } from "react";
 import Dropzone from "react-dropzone";
 import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -29,7 +29,7 @@ class FileUpload extends Component {
 
       this.setState(
         {
-          upoading: false,
+          uploading: false,
           uploadedFiles: [...this.state.uploadedFiles, response.data]
         },
         () => {
@@ -51,10 +51,11 @@ class FileUpload extends Component {
   };
 
   showUploadedImages = () =>
-    this.state.uploadedFiles.map(item => (
+    this.state.uploadedFiles.map((item, i) => (
       <div
         className="dropzone_box"
-        key={item.public_id}
+        // key={item.public_id}
+        key={i}
         onClick={() => this.onRemove(item.public_id)}
       >
         <div
@@ -74,24 +75,23 @@ class FileUpload extends Component {
   }
 
   render() {
+    const dropzoneRef = createRef();
+
     return (
       <div>
         <section>
           <div className="dropzone clear">
             <Dropzone
-              onDrop={e => this.onDrop(e)}
+              ref={dropzoneRef}
               multiple={false}
-              className="dropzone_box"
+              onDrop={e => this.onDrop(e)}
             >
               {({ getRootProps, getInputProps }) => (
-                <div {...getRootProps()}>
-                  <input
-                    {...getInputProps()}
-                    style={{ height: "150px important!" }}
-                  />
+                <div {...getRootProps()} className="dropzone_box">
+                  <input {...getInputProps()} />
                   <div className="wrap">
                     <FaPlusCircle />
-                  </div>
+                  </div>{" "}
                 </div>
               )}
             </Dropzone>

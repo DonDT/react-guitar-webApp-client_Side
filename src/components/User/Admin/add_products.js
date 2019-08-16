@@ -230,9 +230,7 @@ class AddProducts extends Component {
 
     if (formIsValid) {
       this.props.dispatch(addProduct(dataToSubmit)).then(() => {
-        console.log("Hi");
         if (this.props.products.addProduct.success) {
-          console.log("Hi-2");
           this.resetFieldHandler();
         } else {
           this.setState({ formError: true });
