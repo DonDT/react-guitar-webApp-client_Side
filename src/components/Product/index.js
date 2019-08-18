@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import PageTop from "../utils/page_top";
 import { connect } from "react-redux";
 import ProdNfo from "./prodNfo";
+import ProdImg from "./prodImg";
+import { addToCart } from "../../actions/user_actions";
 
 import {
   getProductDetail,
@@ -12,11 +14,19 @@ class ProductPage extends Component {
   componentDidMount() {
     const id = this.props.match.params.id;
     console.log(id);
-    this.props.dispatch(getProductDetail(id));
+    this.props.dispatch(getProductDetail(id)).then(response => {
+      if (!this.props.products.prodDetail) {
+        this.props.history.push("/");
+      }
+    });
   }
 
   componentWillUnmount() {
     this.props.dispatch(claerProductDetail());
+  }
+
+  addToCartHandler(id) {
+    this.props.dispatch(addToCart(id));
   }
 
   render() {
@@ -26,7 +36,11 @@ class ProductPage extends Component {
         <div className="container">
           {this.props.products.prodDetail ? (
             <div className="product_detail_wrapper">
-              <div className="left">images</div>
+              <div className="left">
+                <div style={{ width: "500px" }}>
+                  <ProdImg detail={this.props.products.prodDetail} />
+                </div>
+              </div>
               <div className="right">
                 <ProdNfo
                   detail={this.props.products.prodDetail}
