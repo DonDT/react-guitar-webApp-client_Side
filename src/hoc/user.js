@@ -5,15 +5,15 @@ import { connect } from "react-redux";
 const links = [
   {
     name: "My account",
-    linkTo: "user/dashboard"
+    linkTo: "/user/dashboard"
   },
   {
     name: "User information",
-    linkTo: "user/user_profile"
+    linkTo: "/user/user_profile"
   },
   {
     name: "My Cart",
-    linkTo: "user/cart"
+    linkTo: "/user/cart"
   }
 ];
 
