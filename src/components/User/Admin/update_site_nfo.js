@@ -7,6 +7,7 @@ import {
   populateFields
 } from "../../utils/Form/formActions";
 import { connect } from "react-redux";
+import { getSiteData, updateSiteData } from "../../../actions/site_actions";
 
 class UpdateSiteInfo extends Component {
   state = {
@@ -68,7 +69,7 @@ class UpdateSiteInfo extends Component {
         element: "input",
         value: "",
         config: {
-          label: "email",
+          label: "Shop email",
           name: "email_input",
           type: "text",
           placeholder: "Enter the site email"
@@ -92,11 +93,23 @@ class UpdateSiteInfo extends Component {
     let formIsValid = isFormValid(this.state.formdata, "site_info");
 
     if (formIsValid) {
-      console.log(dataToSubmit);
+      this.props.dispatch(updateSiteData(dataToSubmit)).then(() => {
+        this.setState(
+          {
+            formSuccess: true
+          },
+          () => {
+            setTimeout(() => {
+              this.setState({ formSuccess: false });
+            }, 2000);
+          }
+        );
+      });
     } else {
       this.setState({ formError: true });
     }
   };
+
   updateForm = element => {
     const newFormdata = update(element, this.state.formdata, "site_info");
 
@@ -105,6 +118,20 @@ class UpdateSiteInfo extends Component {
       formdata: newFormdata
     });
   };
+
+  componentDidMount() {
+    this.props.dispatch(getSiteData()).then(() => {
+      console.log(this.props.site.siteData[0]);
+
+      const newFormdata = populateFields(
+        this.state.formdata,
+        this.props.site.siteData[0]
+      );
+      this.setState({
+        formdata: newFormdata
+      });
+    });
+  }
 
   render() {
     return (

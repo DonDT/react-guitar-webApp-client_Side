@@ -3,8 +3,8 @@ import { IoIosCall } from "react-icons/io";
 import { FaEdge } from "react-icons/fa";
 import { MdAccountBalance, MdAlarm } from "react-icons/md";
 
-const Footer = () => {
-  return (
+const Footer = ({ data }) => {
+  return data.siteData ? (
     <footer className="bck_b_dark">
       <div className="container">
         <div className="logo">Waves</div>
@@ -16,28 +16,28 @@ const Footer = () => {
                 <MdAccountBalance className="icon" />
                 <div className="nfo">
                   <div>Address</div>
-                  <div>Kramer 2345</div>
+                  <div>{data.siteData[0].address}</div>
                 </div>
               </div>
               <div className="tag">
                 <IoIosCall className="icon" />
                 <div className="nfo">
                   <div>Phone</div>
-                  <div>738737-8383</div>
+                  <div>{data.siteData[0].phone}</div>
                 </div>
               </div>
               <div className="tag">
                 <MdAlarm className="icon" />
                 <div className="nfo">
                   <div>Working hourse</div>
-                  <div>Mon-Sun/ 9am-8pm</div>
+                  <div>{data.siteData[0].hours}</div>
                 </div>
               </div>
               <div className="tag">
                 <FaEdge className="icon" />
                 <div className="nfo">
                   <div>Email</div>
-                  <div>nfo@gmail.com</div>
+                  <div>{data.siteData[0].email}</div>
                 </div>
               </div>
             </div>
@@ -53,7 +53,7 @@ const Footer = () => {
         </div>
       </div>
     </footer>
-  );
+  ) : null;
 };
 
 export default Footer;
